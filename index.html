@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园场所名片</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft YaHei', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+            padding: 40px; 
+            max-width: 400px; 
+            width: 100%; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .card::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; 
+            height: 4px; 
+            background: linear-gradient(90deg, #667eea, #764ba2); 
+        }
+        .header { margin-bottom: 30px; }
+        .campus { color: #666; font-size: 16px; margin-bottom: 5px; }
+        .place-name { color: #333; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .place-type { 
+            display: inline-block; 
+            background: #667eea; 
+            color: white; 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+            font-size: 14px; 
+        }
+        .description { color: #666; line-height: 1.6; margin: 20px 0; text-align: left; }
+        .time { color: #999; font-size: 12px; margin-top: 20px; }
+        .logo { 
+            width: 80px; height: 80px; 
+            background: #f8f9fa; 
+            border-radius: 50%; 
+            margin: 0 auto 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 24px; 
+            color: #667eea; 
+            border: 3px solid #e9ecef; 
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">🏫</div>
+        <div class="header">
+            <div class="campus" id="campus">XX大学</div>
+            <div class="place-name" id="placeName">场所名称</div>
+            <div class="place-type" id="placeType">场所类型</div>
+        </div>
+        <div class="description" id="description">场所描述信息将显示在这里</div>
+        <div class="time" id="createTime">生成时间</div>
+    </div>
+
+    <script>
+        // 获取URL参数
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                campus: decodeURIComponent(params.get('campus') || 'XX大学'),
+                name: decodeURIComponent(params.get('name') || '场所名称'),
+                type: decodeURIComponent(params.get('type') || '场所类型'),
+                desc: decodeURIComponent(params.get('desc') || '暂无描述'),
+                time: decodeURIComponent(params.get('time') || '未知时间')
+            };
+        }
+
+        // 更新页面内容
+        function updateContent() {
+            const params = getUrlParams();
+
+            document.getElementById('campus').textContent = params.campus;
+            document.getElementById('placeName').textContent = params.name;
+            document.getElementById('placeType').textContent = params.type;
+            document.getElementById('description').textContent = params.desc;
+            document.getElementById('createTime').textContent = '生成时间: ' + params.time;
+
+            // 根据场所类型更改颜色
+            const typeElement = document.getElementById('placeType');
+            const typeColors = {
+                '教学楼': '#e74c3c', '实验室': '#3498db', '图书馆': '#2ecc71',
+                '食堂': '#f39c12', '宿舍': '#9b59b6', '体育馆': '#1abc9c',
+                '行政楼': '#34495e', '操场': '#27ae60'
+            };
+
+            if (typeColors[params.type]) {
+                typeElement.style.background = typeColors[params.type];
+            }
+        }
+
+        window.addEventListener('load', updateContent);
+    </script>
+</body>
+</html>
+        
